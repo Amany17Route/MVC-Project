@@ -1,3 +1,6 @@
+using Company.Data.Contexts;
+using Microsoft.EntityFrameworkCore;
+
 namespace Company.Web
 {
     public class Program
@@ -9,6 +12,11 @@ namespace Company.Web
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddDbContext<CompanyDbContext2>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -18,7 +26,6 @@ namespace Company.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

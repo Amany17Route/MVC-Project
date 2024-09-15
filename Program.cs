@@ -19,7 +19,6 @@ namespace Company.Web
                 app.UseHsts();
             }
 
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

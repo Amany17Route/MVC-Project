@@ -23,11 +23,16 @@ namespace Company.Web
             builder.Services.AddScoped<IEmpolyeeRepository, EmployeeRepository>();
 
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-            builder.Services.AddScoped<IGenirecRepository<Department> , GenericRepository<Department>>();
 
-            builder.Services.AddScoped<IGenirecRepository<Employee> , GenericRepository<Employee>>();
+            //builder.Services.AddSingleton<IGenirecRepository<Department> , GenericRepository<Department>>();
 
-           var app = builder.Build();
+            //builder.Services.AddTransient<IGenirecRepository<Employee> , GenericRepository<Employee>>();
+
+            builder.Services.AddScoped<IGenirecRepository<Department>, GenericRepository<Department>>();
+
+            builder.Services.AddScoped<IGenirecRepository<Employee>, GenericRepository<Employee>>();
+
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

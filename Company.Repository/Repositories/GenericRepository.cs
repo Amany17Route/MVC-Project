@@ -41,7 +41,7 @@ namespace Company.Repository.Repositories
         public void Update(T entity)
         { 
             _context.Set<T>().Update(entity); 
-            _context.SaveChanges(); 
+            _context.SaveChanges();
 
         
         }

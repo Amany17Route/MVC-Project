@@ -23,6 +23,14 @@ namespace Company.Web.Controllers
 
             return View(dept);
         }
+
+        [HttpGet]
+        public IActionResult Create() { 
+        return View();
+        }
+
+
+        [HttpPost]
         public IActionResult Create(Department department) {
             try
             {

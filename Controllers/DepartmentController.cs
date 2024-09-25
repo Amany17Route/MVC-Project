@@ -54,7 +54,7 @@ namespace Company.Web.Controllers
 
         }
         [HttpGet]
-        public IActionResult Details(int? id)
+        public IActionResult Details(int? id , string viewname ="Details")
         {
             var dept = _departmentService.GetById(id);
             if (dept is null)
@@ -63,9 +63,21 @@ namespace Company.Web.Controllers
             }
 
 
-            return View(dept);
+            return View(viewname , dept);
 
         }
 
+        [HttpGet]
+        public IActionResult Update(int? id)
+        {
+            return Details(id , "Update");
+
+        }
+
+        [HttpPost]
+        public IActionResult Update(Department department)
+        {
+         
+        }
     }
 }

@@ -51,9 +51,19 @@ namespace Company.Service.Services
 
         }
 
-        public void Update(Department department)
+        public void Update(Department employee)
         {
-            throw new NotImplementedException();
+            var dept = GetById(employee.Id);
+            if(dept.Name != employee.Name)
+            {
+                if (GetAll().Any(x => x.Name == employee.Name))
+                {
+                    throw new Exception("Dublicated Departments Name");
+                }
+            }
+            dept.Name = employee.Name;
+            dept.Code = employee.Code;
+            _departmentRepository.Update(employee);
         }
     }
 }

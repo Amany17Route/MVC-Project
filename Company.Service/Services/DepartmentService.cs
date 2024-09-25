@@ -63,7 +63,7 @@ namespace Company.Service.Services
             }
             dept.Name = employee.Name;
             dept.Code = employee.Code;
-            _departmentRepository.Update(employee);
+            _departmentRepository.Update(dept);
         }
     }
 }

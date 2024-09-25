@@ -75,9 +75,12 @@ namespace Company.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(Department department)
+        public IActionResult Update(int? id , Department department)
         {
-         
+            if (department.Id != id.Value)
+                return RedirectToAction("NotFoundPage", null, "Home");
+         _departmentService.Update(department);
+            return RedirectToAction(nameof (Index));
         }
     }
 }

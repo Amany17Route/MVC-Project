@@ -26,6 +26,7 @@ namespace Company.Web
 
             //builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             //builder.Services.AddSingleton<IGenirecRepository<Department> , GenericRepository<Department>>();

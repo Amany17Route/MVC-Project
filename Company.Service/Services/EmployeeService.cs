@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Company.Service.Helper;
 
 namespace Company.Service.Services
 {
@@ -40,6 +41,7 @@ namespace Company.Service.Services
 
             //};
 
+            entityDto.ImgUrl = DocumentSettings.UploadFile(entityDto.Image, "Images");
             Employee employee =_mapper.Map<Employee>(entityDto);
             _unitOfWork.empolyeeRepository.Add(employee);
             _unitOfWork.Complete();

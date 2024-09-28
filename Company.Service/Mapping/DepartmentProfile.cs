@@ -13,7 +13,7 @@ namespace Company.Service.Mapping
     {
         public DepartmentProfile()
         {
-            CreateMap<Department, DepartmentDto>().ReverseMap();
+            CreateMap<Department, Department>().ReverseMap();
 
         }
     }

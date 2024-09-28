@@ -16,6 +16,10 @@ namespace Company.Service.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        public DepartmentService()
+        {
+
+        }
 
         public DepartmentService(IUnitOfWork unitOfWork , IMapper mapper) {
             _unitOfWork = unitOfWork;
@@ -25,13 +29,13 @@ namespace Company.Service.Services
 
         public void Add(DepartmentDto entityDto)
         {
-            //var MappedDepartment = new Department
-            //{
-            //    Code = employee.Code,
-            //    Name = employee.Name,
-            //    CreatedAt = DateTime.Now
-            //};
-            Department department = _mapper.Map<Department>(entityDto);
+            var MappedDepartment = new Department
+            {
+                Code = entityDto.Code,
+                Name = entityDto.Name,
+                CreatedAt = DateTime.Now
+            };
+            Department department = _mapper.Map<Department>(MappedDepartment);
             _unitOfWork.departmentRepository.Add(department);
             _unitOfWork.Complete();
 
@@ -46,11 +50,11 @@ namespace Company.Service.Services
 
         }
 
-        public IEnumerable<DepartmentDto> GetAll()
+        public IEnumerable<Department> GetAll()
         {
           var dept = _unitOfWork.departmentRepository.GetAll()/*Where(x => x.IsDeleted != true)*/;
-            IEnumerable<DepartmentDto> MappedDepartment = _mapper.Map<IEnumerable<DepartmentDto>>(dept);
-            return MappedDepartment;
+           // IEnumerable<DepartmentDto> MappedDepartment = _mapper.Map<IEnumerable<DepartmentDto>>(dept);
+            return dept;
         }
 
         public DepartmentDto GetById(int? id)

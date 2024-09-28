@@ -32,7 +32,7 @@ namespace Company.Web
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
             builder.Services.AddAutoMapper(x => x.AddProfile(new EmployeeProfile()));
-
+            builder.Services.AddAutoMapper(x => x.AddProfile(new DepartmentProfile()));
            
             //builder.Services.AddSingleton<IGenirecRepository<Department> , GenericRepository<Department>>();
 

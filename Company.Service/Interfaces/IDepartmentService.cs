@@ -16,7 +16,7 @@ namespace Company.Service.Interfaces
 
         void Add(DepartmentDto department);
 
-        void Update(DepartmentDto department);
+       // void Update(DepartmentDto department);
 
         void Delete(DepartmentDto department);
 

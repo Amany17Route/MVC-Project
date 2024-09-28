@@ -1,7 +1,7 @@
-﻿using Company.Data.Models;
+﻿using Company.Service.Dto;
+using Company.Data.Models;
 using Company.Repository.Interfaces;
 using Company.Service.Interfaces;
-using Company.Service.Interfaces.Department;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -37,6 +37,7 @@ namespace Company.Service.Services
         public void Delete(DepartmentDto employee)
         {
          _unitOfWork.departmentRepository.Delete(employee);
+
         }
 
         public IEnumerable<DepartmentDto> GetAll()

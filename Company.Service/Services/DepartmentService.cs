@@ -1,6 +1,7 @@
 ﻿using Company.Data.Models;
 using Company.Repository.Interfaces;
 using Company.Service.Interfaces;
+using Company.Service.Interfaces.Department;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace Company.Service.Services
         }
 
 
-        public void Add(Department employee)
+        public void Add(DepartmentDto employee)
         {
             var MappedDepartment = new Department
             {
@@ -33,18 +34,18 @@ namespace Company.Service.Services
            
         }
 
-        public void Delete(Department employee)
+        public void Delete(DepartmentDto employee)
         {
          _unitOfWork.departmentRepository.Delete(employee);
         }
 
-        public IEnumerable<Department> GetAll()
+        public IEnumerable<DepartmentDto> GetAll()
         {
           var dept = _unitOfWork.departmentRepository.GetAll()/*Where(x => x.IsDeleted != true)*/;
             return dept;
         }
 
-        public Department GetById(int? id)
+        public DepartmentDto GetById(int? id)
         {
             if(id is null)
             {
@@ -60,7 +61,7 @@ namespace Company.Service.Services
 
         }
 
-        public void Update(Department employee)
+        public void Update(DepartmentDto employee)
         {
             var dept = GetById(employee.Id);
             if(dept.Name != employee.Name)

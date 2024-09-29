@@ -1,7 +1,7 @@
-﻿@model Employee
+﻿@model EmployeeDto
 
  @{
-    var departments = new SelectList(ViewBag.Departments, nameof(Department.Id), nameof(Department.Name));
+    var departments = new SelectList(ViewBag.Departments, nameof(DepartmentDto.Id), nameof(DepartmentDto.Name));
 } 
 @* <div class="mt-5 alert alert-danger">
     <h3>@ViewBag.Message</h3>
@@ -15,7 +15,7 @@
     <h3>@TempData["TxyMessage2"]</h3>
  *@
 </div>
-<form asp-action="Create">
+<form asp-action="Create" enctype="multipart/form-data">
     <div class="form-group">
         <label class="col-form-label" asp-for="Name"></label>
         <input type="text" asp-for="Name" class="form-control" />
@@ -61,8 +61,8 @@
 
 
     <div class="form-group">
-        <label class="col-form-label" asp-for="ImgUrl"></label>
-        <input type="file" asp-for="ImgUrl" class="form-control-file" />
+        <label class="col-form-label" asp-for="Image"></label>
+        <input type="file" asp-for="Image" class="form-control-file" />
 
     <input type="submit" value="Create" class="btn btn-primary" />
     <a asp-action="Index" class="btn btn-light">Back To List</a>

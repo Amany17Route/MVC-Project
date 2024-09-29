@@ -5,6 +5,7 @@ using Company.Repository.Repositories;
 using Company.Service.Interfaces;
 using Company.Service.Mapping;
 using Company.Service.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Company.Web
@@ -23,7 +24,7 @@ namespace Company.Web
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
-           // builder.Services.AddScoped<IEmpolyeeRepository, EmployeeRepository>();
+            // builder.Services.AddScoped<IEmpolyeeRepository, EmployeeRepository>();
 
             //builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -33,14 +34,41 @@ namespace Company.Web
 
             builder.Services.AddAutoMapper(x => x.AddProfile(new EmployeeProfile()));
             builder.Services.AddAutoMapper(x => x.AddProfile(new DepartmentProfile()));
-           
+
             //builder.Services.AddSingleton<IGenirecRepository<Department> , GenericRepository<Department>>();
 
             //builder.Services.AddTransient<IGenirecRepository<Employee> , GenericRepository<Employee>>();
 
-           // builder.Services.AddScoped<IGenirecRepository<Department>, GenericRepository<Department>>();
+            // builder.Services.AddScoped<IGenirecRepository<Department>, GenericRepository<Department>>();
 
-           // builder.Services.AddScoped<IGenirecRepository<Employee>, GenericRepository<Employee>>();
+            // builder.Services.AddScoped<IGenirecRepository<Employee>, GenericRepository<Employee>>();
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+            {
+                config.Password.RequiredUniqueChars = 2;
+                config.Password.RequireDigit = true;
+                config.Password.RequireLowercase = true;
+                config.Password.RequireUppercase = true;
+                config.Password.RequireNonAlphanumeric = true;
+                config.User.RequireUniqueEmail = true;
+                config.Lockout.AllowedForNewUsers = true;
+                config.Lockout.MaxFailedAccessAttempts = 3;
+                config.Lockout.DefaultLockoutTimeSpan= TimeSpan.FromMinutes(1);
+           }).AddEntityFrameworkStores<CompanyDbContext2>()
+           .AddDefaultTokenProviders();
+
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                options.SlidingExpiration = true;
+                options.LogoutPath = "/Account/Logout";
+                options.LoginPath = "/Account/Login";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+
+
+
+            });
+                                                           
 
             var app = builder.Build();
 
@@ -56,9 +84,11 @@ namespace Company.Web
             app.UseStaticFiles();
 
             app.UseRouting();
+           
+            app.UseAuthentication();
 
             app.UseAuthorization();
-
+           
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

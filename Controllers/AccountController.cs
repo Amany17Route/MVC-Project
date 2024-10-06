@@ -1,7 +1,9 @@
 ﻿using Company.Data.Models;
+using Company.Service.Helper;
 using Company.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace Company.Web.Controllers
 {
@@ -93,6 +95,50 @@ namespace Company.Web.Controllers
             await _signInManager.SignOutAsync();
 
             return RedirectToAction(nameof(SignIn));
+        }
+
+       
+        
+        [   HttpGet]
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task< IActionResult> ForgetPassword(ForgetPasswordViewModel input)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(input.Email);
+
+                if (user is not null)
+                { 
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                    var url = Url.Action("ResetPassword", "Account", new { Email = input.Email, Token = token }, Request.Scheme);
+
+                    var email = new Email
+                    {
+                        Body=url,
+                        Subiect = "Reset Password",
+                        To=input.Email
+                    };
+
+                    EmailSettings.SendEmail(email);
+
+                    return RedirectToAction(nameof(CheckYourInbox));
+                }
+
+            }
+
+                    return View(input);
+        }
+        public IActionResult CheckYourInbox()
+        {
+            return View();
         }
     }
 }

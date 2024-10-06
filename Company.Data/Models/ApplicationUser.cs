@@ -17,3 +17,4 @@ namespace Company.Data.Models
 
     }
 }
+

@@ -4,6 +4,7 @@ using Company.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using NuGet.Common;
 
 namespace Company.Web.Controllers
 {
@@ -139,6 +140,41 @@ namespace Company.Web.Controllers
         public IActionResult CheckYourInbox()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string Email , string Token)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task< IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid) { 
+            var user = await _userManager.FindByEmailAsync (model.Email);
+                if (user is not null) 
+                {
+                    var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction(nameof(SignIn));
+                    
+                    }
+
+                    foreach(var err in result.Errors)
+                    {
+                        ModelState.AddModelError("", err.Description);
+                    }
+                }
+            
+            }
+
+
+
+
+            return View(model);
         }
     }
 }

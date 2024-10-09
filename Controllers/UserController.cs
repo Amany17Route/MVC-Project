@@ -86,9 +86,15 @@ namespace Company.Web.Controllers
                     var res = await _userManager.UpdateAsync(user);
 
                     if (res.Succeeded)
-
+                    {
                         _logger.LogInformation("User Updated Successfully");
-                    return RedirectToAction(nameof(Index));
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        _logger.LogInformation("User Updated Faild");
+                        return View(userUpdateViewModel);
+                    }
                 }
                 catch (Exception ex)
                 {

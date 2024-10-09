@@ -361,3 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Company.Service/Interfaces/Department/DepartmentDto.cs
+/Company.Service/Interfaces/Employee/Dto/EmployeeDto.cs
+/Controllers/DepartmentController.cs
+/Company.Service/Dto/EmployeeDto.cs
+/Company.Service/Dto/DepartmentDto.cs

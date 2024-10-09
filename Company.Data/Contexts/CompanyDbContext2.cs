@@ -1,4 +1,5 @@
 ﻿using Company.Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Company.Data.Contexts
 {
-    public class CompanyDbContext2 : DbContext
+    public class CompanyDbContext2 : IdentityDbContext<ApplicationUser>
 
     {
         public CompanyDbContext2(DbContextOptions options) : base(options)
@@ -23,7 +24,7 @@ namespace Company.Data.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
+           base.OnModelCreating(modelBuilder);
         }
 
 

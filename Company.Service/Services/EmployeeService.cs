@@ -1,11 +1,14 @@
 ﻿using Company.Data.Models;
 using Company.Repository.Interfaces;
 using Company.Service.Interfaces;
+using Company.Service.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using Company.Service.Helper;
 
 namespace Company.Service.Services
 {
@@ -13,52 +16,103 @@ namespace Company.Service.Services
     {
 
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public EmployeeService(IUnitOfWork unitOfWork)
+        public EmployeeService(IUnitOfWork unitOfWork , IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public void Add(Employee department)
+        public void Add(EmployeeDto entityDto)
         {
-            _unitOfWork.empolyeeRepository.Add(department);
+            //Manual Mapping
+            //Employee employee = new Employee
+            //{
+            //    Address = entityDto.Address,
+            //    Age = entityDto.Age,
+            //    DepartmentId=entityDto.DepartmentId,
+            //    Email = entityDto.Email,
+            //    HiringDate = entityDto.HiringDate,
+            //    ImgUrl = entityDto.ImgUrl,
+            //    Name = entityDto.Name,
+            //    PhoneNumber = entityDto.PhoneNumber,
+            //    Salary = entityDto.Salary
+
+            //};
+
+            entityDto.ImgUrl = DocumentSettings.UploadFile(entityDto.Image, "Images");
+            Employee employee =_mapper.Map<Employee>(entityDto);
+            _unitOfWork.empolyeeRepository.Add(employee);
             _unitOfWork.Complete();
         }
 
-        public void Delete(Employee department)
+        public void Delete(EmployeeDto entityDto)
         {
-            _unitOfWork.empolyeeRepository.Delete(department);
+            //Employee employee = new Employee
+            //{
+            //    Address = entity.Address,
+            //    Age = entity.Age,
+            //    DepartmentId = entity.DepartmentId,
+            //    Email = entity.Email,
+            //    HiringDate = entity.HiringDate,
+            //    ImgUrl = entity.ImgUrl,
+            //    Name = entity.Name,
+            //    PhoneNumber = entity.PhoneNumber,
+            //    Salary = entity.Salary
+
+            //};
+            Employee employee = _mapper.Map<Employee>(entityDto);
+            _unitOfWork.empolyeeRepository.Delete(employee);
             _unitOfWork.Complete();
         }
 
-        public IEnumerable<Employee> GetAll()
+        public IEnumerable<EmployeeDto> GetAll()
         {
-            var dept = _unitOfWork.empolyeeRepository.GetAll();
-            return dept;
+            var emp = _unitOfWork.empolyeeRepository.GetAll();
+
+            //var MappedEmployee = emp.Select(x => new EmployeeDto
+            //{
+            //    DepartmentId = x.DepartmentId,
+            //    Address = x.Address,
+            //    Salary=x.Salary,
+            //    HiringDate=x.HiringDate,
+            //    ImgUrl=x.ImgUrl,
+            //    Name = x.Name,
+            //    PhoneNumber=x.PhoneNumber,
+            //    CreatedAt = x.CreatedAt,
+
+            //});
+            IEnumerable<EmployeeDto> MappedEmployee= _mapper.Map<IEnumerable<EmployeeDto>>(emp);
+            return MappedEmployee;
         }
 
-        public Employee GetById(int? id)
+        public EmployeeDto GetById(int? id)
         {
           if(id is null)
             {
                 return null;
             }
-          var dept = _unitOfWork.empolyeeRepository.GetById(id.Value);
-            if(dept is null)
-            {
+          var emp = _unitOfWork.empolyeeRepository.GetById(id.Value);
+            if(emp is null)           
                 return null;
-            }
 
-            return dept;
+            EmployeeDto employeeDto = _mapper.Map<EmployeeDto>(emp);
+            return employeeDto;
         }
 
-        public IEnumerable<Employee> GetEmployeeByName(string name)
-       => _unitOfWork.empolyeeRepository.GetEmployeeByName(name);
+        public IEnumerable<EmployeeDto> GetEmployeeByName(string name)
+        { 
+           var emp= _unitOfWork.empolyeeRepository.GetEmployeeByName(name);
 
-        public void Update(Employee department)
-        {
-            _unitOfWork.empolyeeRepository.Update(department);
-            _unitOfWork.Complete();
+            IEnumerable<EmployeeDto> MappedEmployee = _mapper.Map<IEnumerable<EmployeeDto>>(emp);
+            return MappedEmployee;
         }
+
+        //public void Update(EmployeeDto department)
+        //{
+        //    _unitOfWork.empolyeeRepository.Update(department);
+        //    _unitOfWork.Complete();
+        //}
     }
 }

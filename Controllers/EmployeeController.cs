@@ -1,4 +1,5 @@
 ﻿using Company.Data.Models;
+using Company.Service.Dto;
 using Company.Service.Interfaces;
 using Company.Service.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ namespace Company.Web.Controllers
             _departmentService = departmentService;
         }
 
-        [HttpGet]
+     
         public IActionResult Index(string searchInp)
         {
             if (string.IsNullOrEmpty(searchInp)) {
@@ -45,7 +46,7 @@ namespace Company.Web.Controllers
 
 
         [HttpPost]
-        public IActionResult Create(Employee employee)
+        public IActionResult Create(EmployeeDto employee)
         {
             try
             {

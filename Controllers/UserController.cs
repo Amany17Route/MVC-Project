@@ -1,4 +1,5 @@
 ﻿using Company.Data.Models;
+using Company.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,19 +32,72 @@ namespace Company.Web.Controllers
 
 
         [HttpGet]
-
         public async Task<IActionResult> Details(string? id, string viewname = "Details")
         {
 
-            var User =await _userManager.FindByIdAsync(id);
+            var User = await _userManager.FindByIdAsync(id);
             if (User is null)
             {
                 return NotFound();
             }
 
-            return View(viewname, User);
+            if (viewname == "Update")
+            {
+                var userModel = new UserUpdateViewModel
+                {
+
+                    Id = User.Id,
+                    UserName = User.UserName
+                };
+              return View(viewname, userModel);
+            }
+        return View(viewname, User);
         }
 
+
+        [HttpGet]
+
+        public async Task<IActionResult> Update(string? id)
+        {
+            return await Details(id, "Update");
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> Update(string? id, UserUpdateViewModel userUpdateViewModel)
+        {
+
+            if (id != userUpdateViewModel.Id)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var user = await _userManager.FindByIdAsync(id);
+                    if (user is null)
+                    {
+                        return NotFound();
+                    }
+                    user.UserName = userUpdateViewModel.UserName;
+                    user.NormalizedUserName = userUpdateViewModel.UserName.ToUpper();
+
+                    var res = await _userManager.UpdateAsync(user);
+
+                    if (res.Succeeded)
+
+                        _logger.LogInformation("User Updated Successfully");
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogInformation(ex.Message);
+                }
+            }
+            return View(userUpdateViewModel);
+
+        }
 
 
     }

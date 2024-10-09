@@ -9,7 +9,7 @@ namespace Company.Web.Models
 
         [Required(ErrorMessage = "Last  Name Is Required")]
         public string LasttName { get; set; }
-
+        
         [Required(ErrorMessage = "Email Name Is Required")]
         [EmailAddress(ErrorMessage ="Invalid Email Format")]
         public string Email { get; set; }

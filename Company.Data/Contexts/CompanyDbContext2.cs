@@ -25,6 +25,7 @@ namespace Company.Data.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ApplicationUser>().HasQueryFilter(x => x.IsActive ==true);
         }
 
 

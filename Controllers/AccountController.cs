@@ -176,5 +176,11 @@ namespace Company.Web.Controllers
 
             return View(model);
         }
+
+
+        public IActionResult AcxessDenied()
+        {
+            return View();
+        }
     }
 }
